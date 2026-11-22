@@ -13,13 +13,19 @@
 
 提交信息带 `[skip ci]`，且 `GITHUB_TOKEN` 的推送不会触发新工作流，不会形成循环。
 
+## 站点源码位置
+
+- **`gh-pages` 是站点唯一源**：`index.html`、`app.js`、`styles.css`、`covers/`、`seed_covers.json`、`subtitles.json`、`update-data.js` 均以该分支为准。
+- `master` 不再保存站点源码，原 `docs/` 旧副本已删除；修改前端页面请直接在 `gh-pages` 分支提交。
+- 不要在 `master` 下重新建立 `docs/`，也不要把 Pages Source 指向 `master/docs`。
+
 ## 仓库设置要求
 
 | 设置 | 位置 | 说明 |
 | --- | --- | --- |
-| Pages Source = **GitHub Actions** | Settings → Pages | 必须。分支构建与 Actions 部署会争抢 Pages 发布锁，导致互相取消；本工作流检测到仍为分支构建时会跳过发布并给出 warning |
+| Pages Source = **GitHub Actions**（推荐）或 **`gh-pages` 分支** | Settings → Pages | 不能使用 `master/docs`。使用 Actions 时，本工作流负责部署；使用分支构建时，工作流会跳过 `deploy`，由 GitHub 自动从 `gh-pages` 构建 |
 | Workflow permissions = **Read and write** | Settings → Actions → General | 需要把生成的 `db.xml` / `db.json.zst` / `subtitles.json` 推回仓库；只读时工作流会给出 warning 而不失败 |
-| `gh-pages` 分支存在 | Branches | 站点文件所在分支 |
+| `gh-pages` 分支存在 | Branches | 站点文件所在分支，已从上游导入 |
 
 ## 脚本行为
 
